@@ -1,4 +1,4 @@
-# Cheng Lim — personal website
+# Wen-Yong Lim — personal website
 
 A simple home for writing and a CV.
 

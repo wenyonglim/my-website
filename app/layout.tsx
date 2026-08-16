@@ -13,18 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cheng Lim — Notes & CV",
-  description: "Writing, ideas and work by Cheng Lim.",
+  title: "Wen-Yong Lim — Notes & CV",
+  description: "Writing, ideas and work by Wen-Yong Lim.",
   metadataBase: new URL("https://cheng-lim-notes.peng-cheng.chatgpt.site"),
   openGraph: {
-    title: "Cheng Lim — Notes & CV",
-    description: "Writing, ideas and work by Cheng Lim.",
+    title: "Wen-Yong Lim — Notes & CV",
+    description: "Writing, ideas and work by Wen-Yong Lim.",
     images: ["/og.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cheng Lim — Notes & CV",
-    description: "Writing, ideas and work by Cheng Lim.",
+    title: "Wen-Yong Lim — Notes & CV",
+    description: "Writing, ideas and work by Wen-Yong Lim.",
     images: ["/og.png"],
   },
   icons: {

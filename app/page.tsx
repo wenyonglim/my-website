@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <main>
       <header>
-        <a className="name" href="#top">Cheng Lim</a>
+        <a className="name" href="#top">Wen-Yong Lim</a>
         <nav aria-label="Primary navigation">
           <a href="#notes">Notes</a>
           <a href="#cv">CV</a>
