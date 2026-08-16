@@ -26,7 +26,7 @@ export default function Home() {
             <p className="label">Experience</p>
             <article>
               <p>Finance Analyst</p>
-              <p>Evyve</p>
+              <p>evyve</p>
               <time>2025—Now</time>
             </article>
             <article>
