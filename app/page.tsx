@@ -113,6 +113,36 @@ export default function Home() {
               scale: { duration: 0.24, ease: [0.16, 1, 0.3, 1] },
             }}
           />
+          <motion.span
+            className="headline-doodle"
+            aria-hidden="true"
+            initial={false}
+            animate={{
+              opacity: headlineHovered ? 1 : 0,
+              scale: reduceMotion ? 1 : headlineHovered ? 1 : 0.72,
+            }}
+            style={{ x: smoothHeadlineX, y: smoothHeadlineY }}
+            transition={{
+              opacity: { duration: 0.16 },
+              scale: { duration: 0.24, ease: [0.16, 1, 0.3, 1] },
+            }}
+          >
+            <motion.span
+              className="headline-eye"
+              animate={
+                headlineHovered && !reduceMotion
+                  ? { scaleY: [1, 0.08, 1] }
+                  : { scaleY: 1 }
+              }
+              transition={{
+                duration: 0.36,
+                delay: headlineHovered ? 0.28 : 0,
+                ease: "easeInOut",
+              }}
+            >
+              <span className="headline-eye-pupil" />
+            </motion.span>
+          </motion.span>
           <h1 aria-label="Thoughts, occasionally.">
             <span className="headline-line" aria-hidden="true">
               <motion.span
