@@ -1,4 +1,10 @@
+"use client";
+
+import { motion, useReducedMotion } from "motion/react";
+
 export default function Home() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <main>
       <header>
@@ -11,6 +17,30 @@ export default function Home() {
 
       <section className="hero" id="top">
         <h1>Thoughts,<br />occasionally.</h1>
+        <motion.a
+          className="scroll-cue"
+          href="#notes"
+          aria-label="Continue to Notes and CV"
+          initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={reduceMotion ? undefined : { y: 4 }}
+          whileTap={reduceMotion ? undefined : { scale: 0.92 }}
+        >
+          <motion.span
+            aria-hidden="true"
+            animate={reduceMotion ? undefined : { y: [0, 7, 0] }}
+            transition={{
+              duration: 1.8,
+              delay: 1.9,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatDelay: 1.5,
+            }}
+          >
+            ↓
+          </motion.span>
+        </motion.a>
       </section>
 
       <section className="row" id="notes">

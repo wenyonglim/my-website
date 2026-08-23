@@ -41,11 +41,32 @@ nav a, footer a { transition: opacity 160ms ease; }
 nav a:hover, footer a:hover { opacity: .4; }
 
 .hero {
+  position: relative;
   min-height: calc(100vh - 96px);
   display: flex;
   align-items: center;
   padding: 10vh 0 18vh;
 }
+
+.scroll-cue {
+  position: absolute;
+  bottom: clamp(28px, 6vh, 72px);
+  left: 50%;
+  translate: -50% 0;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: var(--soft);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+  transition: color 160ms ease;
+}
+
+.scroll-cue span { display: block; }
+.scroll-cue:hover { color: var(--ink); }
+.scroll-cue:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
 
 h1 {
   margin: 0;
@@ -116,6 +137,7 @@ footer {
   main { width: calc(100% - 32px); }
   header { height: 76px; }
   .hero { min-height: calc(100svh - 76px); padding-bottom: 22vh; }
+  .scroll-cue { bottom: 24px; }
   h1 { font-size: clamp(56px, 18vw, 92px); }
   .row { min-height: 220px; grid-template-columns: 1fr; gap: 28px; }
   .cv { gap: 56px; padding-bottom: 120px; }
