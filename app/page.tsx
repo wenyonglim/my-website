@@ -42,8 +42,8 @@ export default function Home() {
                 filter: "blur(0px)",
               }}
               transition={{
-                duration: reduceMotion ? 0 : 0.9,
-                delay: reduceMotion ? 0 : 0.08,
+                duration: reduceMotion ? 0 : 0.98,
+                delay: reduceMotion ? 0 : 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
             >
@@ -65,8 +65,8 @@ export default function Home() {
                 filter: "blur(0px)",
               }}
               transition={{
-                duration: reduceMotion ? 0 : 1,
-                delay: reduceMotion ? 0 : 0.2,
+                duration: reduceMotion ? 0 : 1.08,
+                delay: reduceMotion ? 0 : 0.23,
                 ease: [0.16, 1, 0.3, 1],
               }}
             >
@@ -88,14 +88,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             whileHover={reduceMotion ? undefined : { y: 4 }}
             whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-            transition={{ duration: 0.75, delay: 1.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.75, delay: 1.27, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.span
               aria-hidden="true"
               animate={reduceMotion ? undefined : { y: [0, 7, 0] }}
               transition={{
                 duration: 1.8,
-                delay: 2.15,
+                delay: 2.27,
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 1.5,
