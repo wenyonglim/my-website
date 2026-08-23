@@ -102,7 +102,7 @@ h1 {
   position: relative;
   width: fit-content;
   max-width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .headline h1 {
