@@ -27,6 +27,7 @@ export default function Home() {
           aria-label={displayName}
           onClick={() => setNameFlip((flip) => flip + 1)}
         >
+          <span className="name-mark" aria-hidden="true" />
           {displayName.split("").map((character, index) => (
             <motion.span
               className="name-letter"

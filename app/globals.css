@@ -34,8 +34,19 @@ header {
 }
 
 .name {
+  display: inline-flex;
+  align-items: center;
   font-weight: 500;
   perspective: 320px;
+}
+
+.name-mark {
+  width: 14px;
+  height: 14px;
+  margin-right: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: url("/wen-yong-mark.png") center / cover no-repeat;
 }
 
 .name-letter {
