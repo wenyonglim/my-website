@@ -98,6 +98,34 @@ h1 {
   letter-spacing: -.07em;
 }
 
+.headline {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.headline h1 {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+.headline-spotlight {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: clamp(120px, 14vw, 210px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--ink);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
 .headline-line {
   display: block;
   overflow: hidden;
@@ -109,6 +137,15 @@ h1 {
   display: block;
   transform-origin: left bottom;
   will-change: transform, opacity, filter;
+}
+
+@media (hover: none) {
+  .headline h1 {
+    color: var(--ink);
+    mix-blend-mode: normal;
+  }
+
+  .headline-spotlight { display: none; }
 }
 
 .row, .cv {
