@@ -33,7 +33,17 @@ header {
   font-size: 13px;
 }
 
-.name { font-weight: 500; }
+.name {
+  font-weight: 500;
+  perspective: 320px;
+}
+
+.name-letter {
+  display: inline-block;
+  transform-origin: center 65%;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
 
 nav { display: flex; gap: 28px; }
 

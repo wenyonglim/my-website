@@ -1,10 +1,13 @@
 "use client";
 
-import { useRef, type CSSProperties } from "react";
+import { useRef, useState, type CSSProperties } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+
+const displayName = "Wen-Yong Lim";
 
 export default function Home() {
   const reduceMotion = useReducedMotion();
+  const [nameFlip, setNameFlip] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -18,7 +21,37 @@ export default function Home() {
   return (
     <main>
       <header>
-        <a className="name" href="#top">Wen-Yong Lim</a>
+        <a
+          className="name"
+          href="#top"
+          aria-label={displayName}
+          onClick={() => setNameFlip((flip) => flip + 1)}
+        >
+          {displayName.split("").map((character, index) => (
+            <motion.span
+              className="name-letter"
+              aria-hidden="true"
+              key={`${nameFlip}-${index}`}
+              initial={nameFlip === 0 || reduceMotion ? false : {
+                opacity: 1,
+                rotateX: 0,
+                y: 0,
+              }}
+              animate={nameFlip === 0 || reduceMotion ? undefined : {
+                opacity: [1, 0.25, 1],
+                rotateX: [0, -180, -360],
+                y: [0, -2, 0],
+              }}
+              transition={{
+                duration: 0.58,
+                delay: index * 0.045,
+                ease: [0.45, 0, 0.2, 1],
+              }}
+            >
+              {character === " " ? "\u00a0" : character}
+            </motion.span>
+          ))}
+        </a>
         <nav aria-label="Primary navigation">
           <a href="#notes">Notes</a>
           <a href="#cv">CV</a>
