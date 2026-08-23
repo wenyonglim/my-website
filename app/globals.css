@@ -53,6 +53,7 @@ nav a:hover, footer a:hover { opacity: .4; }
   bottom: clamp(28px, 6vh, 72px);
   left: 50%;
   translate: -50% 0;
+  opacity: var(--scroll-cue-opacity, 1);
   display: grid;
   width: 40px;
   height: 40px;

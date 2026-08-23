@@ -1,9 +1,19 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { useRef, type CSSProperties } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 export default function Home() {
   const reduceMotion = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const scrollOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0]);
+  const scrollPointerEvents = useTransform(scrollOpacity, (opacity) =>
+    opacity < 0.05 ? "none" : "auto",
+  );
 
   return (
     <main>
@@ -15,30 +25,37 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="hero" id="top">
+      <section className="hero" id="top" ref={heroRef}>
         <h1>Thoughts,<br />occasionally.</h1>
         <motion.a
           className="scroll-cue"
           href="#notes"
           aria-label="Continue to Notes and CV"
-          initial={reduceMotion ? false : { opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          whileHover={reduceMotion ? undefined : { y: 4 }}
-          whileTap={reduceMotion ? undefined : { scale: 0.92 }}
+          style={{
+            "--scroll-cue-opacity": scrollOpacity,
+            pointerEvents: scrollPointerEvents,
+          } as CSSProperties}
         >
           <motion.span
-            aria-hidden="true"
-            animate={reduceMotion ? undefined : { y: [0, 7, 0] }}
-            transition={{
-              duration: 1.8,
-              delay: 1.9,
-              ease: "easeInOut",
-              repeat: Infinity,
-              repeatDelay: 1.5,
-            }}
+            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={reduceMotion ? undefined : { y: 4 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.92 }}
+            transition={{ duration: 0.75, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            ↓
+            <motion.span
+              aria-hidden="true"
+              animate={reduceMotion ? undefined : { y: [0, 7, 0] }}
+              transition={{
+                duration: 1.8,
+                delay: 1.9,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatDelay: 1.5,
+              }}
+            >
+              ↓
+            </motion.span>
           </motion.span>
         </motion.a>
       </section>
