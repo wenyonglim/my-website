@@ -55,10 +55,6 @@ export default function Home() {
             </article>
           </div>
 
-          <div className="cv-group tools">
-            <p className="label">Tools</p>
-            <p>Xero · Dext · Simpro · Power BI · Excel · Power Automate</p>
-          </div>
         </div>
       </section>
 
