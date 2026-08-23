@@ -17,7 +17,10 @@ export default function Home() {
   const reduceMotion = useReducedMotion();
   const [nameFlip, setNameFlip] = useState(0);
   const [headlineHovered, setHeadlineHovered] = useState(false);
+  const [headlineEyeRevealed, setHeadlineEyeRevealed] = useState(false);
   const heroRef = useRef<HTMLElement>(null);
+  const headlineSpotlightRef = useRef<HTMLSpanElement>(null);
+  const headlineEyeRef = useRef<HTMLSpanElement>(null);
   const headlineX = useMotionValue(-200);
   const headlineY = useMotionValue(-200);
   const smoothHeadlineX = useSpring(headlineX, {
@@ -45,6 +48,21 @@ export default function Home() {
     const bounds = event.currentTarget.getBoundingClientRect();
     headlineX.set(event.clientX - bounds.left);
     headlineY.set(event.clientY - bounds.top);
+
+    const spotlightBounds = headlineSpotlightRef.current?.getBoundingClientRect();
+    const eyeBounds = headlineEyeRef.current?.getBoundingClientRect();
+
+    if (spotlightBounds && eyeBounds) {
+      const eyeX = eyeBounds.left + eyeBounds.width / 2;
+      const eyeY = eyeBounds.top + eyeBounds.height / 2;
+      const revealRadius = Math.max(
+        24,
+        spotlightBounds.width / 2 - eyeBounds.width / 2 - 6,
+      );
+      const distance = Math.hypot(event.clientX - eyeX, event.clientY - eyeY);
+
+      setHeadlineEyeRevealed(distance <= revealRadius);
+    }
   };
 
   return (
@@ -97,9 +115,13 @@ export default function Home() {
             setHeadlineHovered(true);
           }}
           onPointerMove={moveHeadlineSpotlight}
-          onPointerLeave={() => setHeadlineHovered(false)}
+          onPointerLeave={() => {
+            setHeadlineHovered(false);
+            setHeadlineEyeRevealed(false);
+          }}
         >
           <motion.span
+            ref={headlineSpotlightRef}
             className="headline-spotlight"
             aria-hidden="true"
             initial={false}
@@ -114,29 +136,29 @@ export default function Home() {
             }}
           />
           <motion.span
+            ref={headlineEyeRef}
             className="headline-doodle"
             aria-hidden="true"
             initial={false}
             animate={{
-              opacity: headlineHovered ? 1 : 0,
-              scale: reduceMotion ? 1 : headlineHovered ? 1 : 0.72,
+              opacity: headlineEyeRevealed ? 1 : 0,
+              scale: reduceMotion ? 1 : headlineEyeRevealed ? 1 : 0.86,
             }}
-            style={{ x: smoothHeadlineX, y: smoothHeadlineY }}
             transition={{
-              opacity: { duration: 0.16 },
-              scale: { duration: 0.24, ease: [0.16, 1, 0.3, 1] },
+              opacity: { duration: 0.12 },
+              scale: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
             }}
           >
             <motion.span
               className="headline-eye"
               animate={
-                headlineHovered && !reduceMotion
+                headlineEyeRevealed && !reduceMotion
                   ? { scaleY: [1, 0.08, 1] }
                   : { scaleY: 1 }
               }
               transition={{
                 duration: 0.36,
-                delay: headlineHovered ? 0.28 : 0,
+                delay: headlineEyeRevealed ? 0.18 : 0,
                 ease: "easeInOut",
               }}
             >
