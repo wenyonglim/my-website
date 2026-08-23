@@ -77,6 +77,19 @@ h1 {
   letter-spacing: -.07em;
 }
 
+.headline-line {
+  display: block;
+  overflow: hidden;
+  padding: .08em .08em .08em 0;
+  margin: -.08em -.08em -.08em 0;
+}
+
+.headline-line > span {
+  display: block;
+  transform-origin: left bottom;
+  will-change: transform, opacity, filter;
+}
+
 .row, .cv {
   min-height: 300px;
   padding: 36px 0;

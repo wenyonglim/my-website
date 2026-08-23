@@ -26,7 +26,54 @@ export default function Home() {
       </header>
 
       <section className="hero" id="top" ref={heroRef}>
-        <h1>Thoughts,<br />occasionally.</h1>
+        <h1 aria-label="Thoughts, occasionally.">
+          <span className="headline-line" aria-hidden="true">
+            <motion.span
+              initial={reduceMotion ? false : {
+                opacity: 0,
+                y: "110%",
+                rotate: 1.5,
+                filter: "blur(10px)",
+              }}
+              animate={{
+                opacity: 1,
+                y: "0%",
+                rotate: 0,
+                filter: "blur(0px)",
+              }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.9,
+                delay: reduceMotion ? 0 : 0.08,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              Thoughts,
+            </motion.span>
+          </span>
+          <span className="headline-line" aria-hidden="true">
+            <motion.span
+              initial={reduceMotion ? false : {
+                opacity: 0,
+                y: "115%",
+                rotate: -1.5,
+                filter: "blur(12px)",
+              }}
+              animate={{
+                opacity: 1,
+                y: "0%",
+                rotate: 0,
+                filter: "blur(0px)",
+              }}
+              transition={{
+                duration: reduceMotion ? 0 : 1,
+                delay: reduceMotion ? 0 : 0.2,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              occasionally.
+            </motion.span>
+          </span>
+        </h1>
         <motion.a
           className="scroll-cue"
           href="#notes"
@@ -41,14 +88,14 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             whileHover={reduceMotion ? undefined : { y: 4 }}
             whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-            transition={{ duration: 0.75, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.75, delay: 1.15, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.span
               aria-hidden="true"
               animate={reduceMotion ? undefined : { y: [0, 7, 0] }}
               transition={{
                 duration: 1.8,
-                delay: 1.9,
+                delay: 2.15,
                 ease: "easeInOut",
                 repeat: Infinity,
                 repeatDelay: 1.5,
