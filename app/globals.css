@@ -248,7 +248,7 @@ h2, .row p { margin: 0; }
 
 .cv article {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(72px, .35fr);
   align-items: baseline;
   column-gap: clamp(24px, 5vw, 72px);
   padding: 18px 0;
@@ -258,7 +258,7 @@ h2, .row p { margin: 0; }
 .cv article:last-child { border-bottom: 1px solid var(--line); }
 .cv article p, .cv article time { margin: 0; }
 .cv article p:nth-child(2), .cv article time { color: var(--soft); }
-.cv article time { white-space: nowrap; }
+.cv article time { justify-self: end; white-space: nowrap; }
 
 footer {
   min-height: 180px;
