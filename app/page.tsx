@@ -12,15 +12,61 @@ import {
 } from "motion/react";
 
 const displayName = "Wen-Yong Lim";
+const confettiColors = ["#ff5c5c", "#f2c14e", "#3ec1d3", "#7bd389", "#9b6dff", "#ffffff"];
+
+type ConfettiPiece = {
+  id: number;
+  x: number;
+  y: number;
+  rotate: number;
+  delay: number;
+  color: string;
+  round: boolean;
+};
+
+const playDiscoveryChime = () => {
+  const AudioContextClass = window.AudioContext
+    ?? (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+
+  if (!AudioContextClass) return;
+
+  const context = new AudioContextClass();
+  const start = context.currentTime;
+  const notes = [523.25, 659.25, 783.99, 1046.5];
+
+  void context.resume();
+
+  notes.forEach((frequency, index) => {
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const noteStart = start + index * 0.055;
+
+    oscillator.type = index === notes.length - 1 ? "sine" : "triangle";
+    oscillator.frequency.setValueAtTime(frequency, noteStart);
+    gain.gain.setValueAtTime(0.0001, noteStart);
+    gain.gain.exponentialRampToValueAtTime(0.035, noteStart + 0.018);
+    gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + 0.22);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(noteStart);
+    oscillator.stop(noteStart + 0.24);
+  });
+
+  window.setTimeout(() => void context.close(), 700);
+};
 
 export default function Home() {
   const reduceMotion = useReducedMotion();
   const [nameFlip, setNameFlip] = useState(0);
   const [headlineHovered, setHeadlineHovered] = useState(false);
   const [headlineEyeRevealed, setHeadlineEyeRevealed] = useState(false);
+  const [headlineEyeCollected, setHeadlineEyeCollected] = useState(false);
+  const [headlineConfetti, setHeadlineConfetti] = useState<ConfettiPiece[]>([]);
   const heroRef = useRef<HTMLElement>(null);
+  const headlineRef = useRef<HTMLDivElement>(null);
   const headlineSpotlightRef = useRef<HTMLSpanElement>(null);
-  const headlineEyeRef = useRef<HTMLSpanElement>(null);
+  const headlineEyeRef = useRef<HTMLButtonElement>(null);
+  const headlineEyePositionedRef = useRef(false);
   const headlineX = useMotionValue(-200);
   const headlineY = useMotionValue(-200);
   const smoothHeadlineX = useSpring(headlineX, {
@@ -42,12 +88,25 @@ export default function Home() {
     opacity < 0.05 ? "none" : "auto",
   );
 
+  const positionHeadlineEye = (headline: HTMLDivElement) => {
+    if (headlineEyePositionedRef.current) return;
+
+    headline.style.setProperty("--eye-x", `${18 + Math.random() * 64}%`);
+    headline.style.setProperty("--eye-y", `${20 + Math.random() * 54}%`);
+    headlineEyePositionedRef.current = true;
+  };
+
   const moveHeadlineSpotlight = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "touch") return;
 
     const bounds = event.currentTarget.getBoundingClientRect();
     headlineX.set(event.clientX - bounds.left);
     headlineY.set(event.clientY - bounds.top);
+
+    if (headlineEyeCollected) {
+      setHeadlineEyeRevealed(false);
+      return;
+    }
 
     const spotlightBounds = headlineSpotlightRef.current?.getBoundingClientRect();
     const eyeBounds = headlineEyeRef.current?.getBoundingClientRect();
@@ -63,6 +122,49 @@ export default function Home() {
 
       setHeadlineEyeRevealed(distance <= revealRadius);
     }
+  };
+
+  const focusHeadlineEye = () => {
+    if (headlineEyeCollected || !headlineRef.current) return;
+
+    positionHeadlineEye(headlineRef.current);
+
+    const headlineBounds = headlineRef.current.getBoundingClientRect();
+    const eyeBounds = headlineEyeRef.current?.getBoundingClientRect();
+
+    if (!eyeBounds) return;
+
+    headlineX.set(eyeBounds.left + eyeBounds.width / 2 - headlineBounds.left);
+    headlineY.set(eyeBounds.top + eyeBounds.height / 2 - headlineBounds.top);
+    setHeadlineHovered(true);
+    setHeadlineEyeRevealed(true);
+  };
+
+  const collectHeadlineEye = () => {
+    if (headlineEyeCollected) return;
+
+    const pieces = reduceMotion
+      ? []
+      : Array.from({ length: 30 }, (_, index) => {
+          const angle = (Math.PI * 2 * index) / 30 + (Math.random() - 0.5) * 0.35;
+          const distance = 80 + Math.random() * 150;
+
+          return {
+            id: index,
+            x: Math.cos(angle) * distance,
+            y: Math.sin(angle) * distance,
+            rotate: (Math.random() - 0.5) * 720,
+            delay: Math.random() * 0.08,
+            color: confettiColors[index % confettiColors.length],
+            round: index % 4 === 0,
+          };
+        });
+
+    setHeadlineEyeCollected(true);
+    setHeadlineEyeRevealed(false);
+    setHeadlineConfetti(pieces);
+    playDiscoveryChime();
+    window.setTimeout(() => setHeadlineConfetti([]), 1400);
   };
 
   return (
@@ -108,9 +210,11 @@ export default function Home() {
 
       <section className="hero" id="top" ref={heroRef}>
         <div
+          ref={headlineRef}
           className="headline"
           onPointerEnter={(event) => {
             if (event.pointerType === "touch") return;
+            positionHeadlineEye(event.currentTarget);
             moveHeadlineSpotlight(event);
             setHeadlineHovered(true);
           }}
@@ -135,19 +239,27 @@ export default function Home() {
               scale: { duration: 0.24, ease: [0.16, 1, 0.3, 1] },
             }}
           />
-          <motion.span
+          <motion.button
             ref={headlineEyeRef}
-            className="headline-doodle"
-            aria-hidden="true"
+            className={`headline-doodle${headlineEyeRevealed ? " is-revealed" : ""}`}
+            type="button"
+            aria-label="Collect the hidden eye"
+            disabled={headlineEyeCollected}
             initial={false}
             animate={{
-              opacity: headlineEyeRevealed ? 1 : 0,
-              scale: reduceMotion ? 1 : headlineEyeRevealed ? 1 : 0.86,
+              opacity: headlineEyeRevealed && !headlineEyeCollected ? 1 : 0,
+              scale: reduceMotion ? 1 : headlineEyeRevealed && !headlineEyeCollected ? 1 : 0.86,
             }}
             transition={{
               opacity: { duration: 0.12 },
               scale: { duration: 0.2, ease: [0.16, 1, 0.3, 1] },
             }}
+            onFocus={focusHeadlineEye}
+            onBlur={() => {
+              setHeadlineHovered(false);
+              setHeadlineEyeRevealed(false);
+            }}
+            onClick={collectHeadlineEye}
           >
             <motion.span
               className="headline-eye"
@@ -164,7 +276,34 @@ export default function Home() {
             >
               <span className="headline-eye-pupil" />
             </motion.span>
-          </motion.span>
+          </motion.button>
+          {headlineConfetti.length > 0 && (
+            <span className="headline-confetti" aria-hidden="true">
+              {headlineConfetti.map((piece) => (
+                <motion.span
+                  className="headline-confetti-piece"
+                  key={piece.id}
+                  initial={{ opacity: 0, x: 0, y: 0, rotate: 0, scale: 0.45 }}
+                  animate={{
+                    opacity: [0, 1, 1, 0],
+                    x: piece.x,
+                    y: [0, piece.y, piece.y + 72],
+                    rotate: piece.rotate,
+                    scale: [0.45, 1, 0.9, 0.65],
+                  }}
+                  style={{
+                    backgroundColor: piece.color,
+                    borderRadius: piece.round ? "999px" : "1px",
+                  }}
+                  transition={{
+                    duration: 1.05,
+                    delay: piece.delay,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                />
+              ))}
+            </span>
+          )}
           <h1 aria-label="Thoughts, occasionally.">
             <span className="headline-line" aria-hidden="true">
               <motion.span

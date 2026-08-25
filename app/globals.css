@@ -99,6 +99,8 @@ h1 {
 }
 
 .headline {
+  --eye-x: 82%;
+  --eye-y: 18%;
   position: relative;
   width: fit-content;
   max-width: 100%;
@@ -127,15 +129,51 @@ h1 {
 }
 
 .headline-doodle {
+  appearance: none;
   position: absolute;
   z-index: 2;
-  top: 18%;
-  right: 7%;
+  top: var(--eye-y);
+  left: var(--eye-x);
   width: clamp(41px, 4.76vw, 71px);
-  translate: 0 -50%;
+  translate: -50% -50%;
   display: grid;
   place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
   pointer-events: none;
+  cursor: inherit;
+  will-change: transform, opacity;
+}
+
+.headline-doodle.is-revealed {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.headline-doodle:focus-visible {
+  border-radius: 50%;
+  outline: 1px solid var(--ink);
+  outline-offset: 7px;
+}
+
+.headline-confetti {
+  position: absolute;
+  z-index: 3;
+  top: var(--eye-y);
+  left: var(--eye-x);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.headline-confetti-piece {
+  position: absolute;
+  top: -5px;
+  left: -3px;
+  width: 6px;
+  height: 11px;
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 8%);
   will-change: transform, opacity;
 }
 
@@ -210,7 +248,8 @@ h1 {
   }
 
   .headline-spotlight,
-  .headline-doodle { display: none; }
+  .headline-doodle,
+  .headline-confetti { display: none; }
 }
 
 .row, .cv {
