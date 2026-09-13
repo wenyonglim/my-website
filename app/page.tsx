@@ -170,9 +170,9 @@ export default function Home() {
   return (
     <main>
       <header>
-        <a
+        <button
           className="name"
-          href="#top"
+          type="button"
           aria-label={displayName}
           onClick={() => setNameFlip((flip) => flip + 1)}
         >
@@ -201,7 +201,7 @@ export default function Home() {
               {character === " " ? "\u00a0" : character}
             </motion.span>
           ))}
-        </a>
+        </button>
         <nav aria-label="Primary navigation">
           <a href="#notes">Notes</a>
           <a href="#cv">CV</a>
