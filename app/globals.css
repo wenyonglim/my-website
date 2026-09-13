@@ -151,6 +151,13 @@ h1 {
   cursor: pointer;
 }
 
+@media (hover: hover) {
+  .headline.is-lens-active,
+  .headline.is-lens-active * {
+    cursor: none;
+  }
+}
+
 .headline-doodle:focus-visible {
   border-radius: 50%;
   outline: 1px solid var(--ink);

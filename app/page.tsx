@@ -211,7 +211,7 @@ export default function Home() {
       <section className="hero" id="top" ref={heroRef}>
         <div
           ref={headlineRef}
-          className="headline"
+          className={`headline${headlineHovered ? " is-lens-active" : ""}`}
           onPointerEnter={(event) => {
             if (event.pointerType === "touch") return;
             positionHeadlineEye(event.currentTarget);
